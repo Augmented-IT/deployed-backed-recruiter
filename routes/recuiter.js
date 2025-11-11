@@ -542,9 +542,27 @@ router.post('/SkipvideoRecording', async(req, res, next) => {
 // Add this import at the top of the file
 const { uploadToS3, generateS3Key } = require('../utils/s3Helper');
 
+function ensureDir(dirPath) {
+  try {
+    // Check if directory exists
+    if (!fs.existsSync(dirPath)) {
+      // Create directory (and any parent dirs)
+      fs.mkdirSync(dirPath, { recursive: true });
+      console.log(`✅ Directory created: ${dirPath}`);
+    } else {
+      console.log(`ℹ️ Directory already exists: ${dirPath}`);
+    }
+  } catch (err) {
+    console.error(`❌ Error creating directory ${dirPath}:`, err);
+  }
+}
+
 router.post('/savevideo', upload.single('profileimage'), async(req, res, next) => {
     try {
-        // Validate file and path
+        const uploadDir = path.join(__dirname, '/public/uploads');
+        const compressDir = path.join(__dirname, '/public/compressed');
+        ensureDir(uploadDir);
+        ensureDir(compressDir);
         if (!req.file || !req.file.path || !req.file.path.includes('compressed')) {
             return res.status(400).json({ success: false, message: 'Invalid file upload' });
         }
