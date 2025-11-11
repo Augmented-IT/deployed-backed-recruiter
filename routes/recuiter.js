@@ -554,21 +554,17 @@ router.post('/savevideo', upload.single('profileimage'), async(req, res, next) =
         
         // Compress video
         await new Promise((resolve, reject) => {
-            exec(`ffmpeg -y -i "${req.file.path}" -preset fast -vcodec libx264 -crf 35 -b:v 350k -maxrate 350k -bufsize 700k -vf scale=640:-1 -c:a aac -b:a 48k "${outputPath}"`, (error, stdout, stderr) => {
+            exec(`ffmpeg -y -i "${req.file.path}" -preset fast -vcodec libx264 -crf 35 -b:v 350k -maxrate 350k -bufsize 700k -vf scale=640:-1 -c:a aac -b:a 48k "${outputPath}"`, async(error, stdout, stderr) => {
                 if (error) {
                     console.error(`FFmpeg error: ${error.message}`);
                     console.error(`FFmpeg stderr: ${stderr}`);
                     return reject(error);
                 }
                 console.log(`Compression finished: ${outputPath}`);
-                resolve();
-            });
-        });
-        
-        // Upload to S3
+                 // Upload to S3
         const s3Key = generateS3Key(req.file.originalname, req.body.email);
         const s3Url = await uploadToS3(outputPath, s3Key);
-        
+        console.log('savevideo',s3Url)
         // Clean up local files
         fs.unlinkSync(req.file.path); // Delete temp file
         fs.unlinkSync(outputPath); // Delete compressed file
@@ -593,6 +589,11 @@ router.post('/savevideo', upload.single('profileimage'), async(req, res, next) =
                 });
             }
         });
+                resolve();
+            });
+        });
+        
+       
         
     } catch (error) {
         console.error('Video processing error:', error);
