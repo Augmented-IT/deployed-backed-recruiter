@@ -489,10 +489,10 @@ router.post('/savevideo', upload.single('profileimage'), (req, res, next) => {
     next();
   }, async (req, res) => {
     try {
-        const uploadDir = path.join(__dirname, '/public/uploads');
-        const compressDir = path.join(__dirname, '/public/compressed');
-        ensureDir(uploadDir);
-        ensureDir(compressDir);
+        // const uploadDir = path.join(__dirname, '/public/uploads');
+        // const compressDir = path.join(__dirname, '/public/compressed');
+        // ensureDir(uploadDir);
+        // ensureDir(compressDir);
         // Validate file and path
         if (!req.file || !req.file.path || !req.file.path.includes('compressed')) {
             return res.status(400).json({ success: false, message: 'Invalid file upload' });
