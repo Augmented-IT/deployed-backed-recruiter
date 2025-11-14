@@ -27,7 +27,10 @@ async function query(sql, params , callBack) {
   //console.log('sddssdssdsddsd',sql,params)
   const connection = await mysql.createConnection(config.db);
   try{
-  const [results, ] = await connection.execute(sql, params);
+  // const [results, ] = await connection.execute(sql, params);
+  const sanitizedParams = params ? params.map(p => p === undefined ? null : p) : params;
+  const [results, ] = await connection.execute(sql, sanitizedParams);
+    
   callBack(null,results)
   connection.end()
   }
