@@ -8,6 +8,7 @@ const logging = require('loglevel');
 const { firebase } = require('./firebase')
 const ffmpeg = require("fluent-ffmpeg");
 const fs = require('fs')
+const path = require('path');
 const {jwtDecode} = require('jwt-decode')
 const { OAuth2Client } = require('google-auth-library');    
 const client = new OAuth2Client('162801726700-iiu2m1j8gpbm3l9uhcnrdddqt4i8rrsp.apps.googleusercontent.com');
