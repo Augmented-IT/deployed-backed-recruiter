@@ -640,8 +640,8 @@ router.post('/compare_candiateProfile_with_JobProfile', async(req, res) => {
     const CandidateProfie = await Search.findOne({where:{email: data.candidateEmail}});
     await transaction1.commit();
     if(!CandidateProfie){
-      res.status(400).json({ error: 'User Candidate profile is not completed!' });
-      return
+     return res.status(400).json({ error: 'User Candidate profile is not completed!' });
+      
     }
     const JobProfiles = await Fiche.findAll();
     let comapareData = []
@@ -704,8 +704,8 @@ router.post('/compare_RecuiterProfile_with_CandidateProfile', async(req, res) =>
     const JobProfiles = await Fiche.findOne({where:{email: data.recuiterEmail}});
     await transaction.commit();
     if(!JobProfiles){
-      res.status(400).json({ error: 'Job Profile is not created!' });
-      return
+     return res.status(400).json({ error: 'Job Profile is not created!' });
+      
     }
     console.log("AllMatchedForUser",AllMatchedForUser)
     const CandidateProfie = await Search.findAll();
