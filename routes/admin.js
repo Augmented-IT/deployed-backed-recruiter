@@ -16,8 +16,17 @@ router.post('/login', function (req, res, next) {
   console.log('req body', req.body.first);
   var sql = "Select * from admin where username = ? and password = ?";
   //  var sql = "SELECT * FROM candidate";
-  con.query(sql, [req.body.first, req.body.password], function (err, result) {
-    if (err) throw err;
+  // con.query(sql, [req.body.first, req.body.password], function (err, result) {
+  //   if (err) throw err;
+  const username = req.body.first || req.body.username || null;
+  const password = req.body.password || null;
+  
+  con.query(sql, [username, password], function (err, result) {
+    if (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ success: false, message: 'Database error occurred' });
+    }
+    
     console.log("Result: " + JSON.stringify(result));
     if (result.length > 0) {
       res.render('dashboard');
