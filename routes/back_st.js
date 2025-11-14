@@ -641,6 +641,7 @@ router.post('/compare_candiateProfile_with_JobProfile', async(req, res) => {
     await transaction1.commit();
     if(!CandidateProfie){
       res.status(400).json({ error: 'User Candidate profile is not completed!' });
+      return
     }
     const JobProfiles = await Fiche.findAll();
     let comapareData = []
@@ -704,6 +705,7 @@ router.post('/compare_RecuiterProfile_with_CandidateProfile', async(req, res) =>
     await transaction.commit();
     if(!JobProfiles){
       res.status(400).json({ error: 'Job Profile is not created!' });
+      return
     }
     console.log("AllMatchedForUser",AllMatchedForUser)
     const CandidateProfie = await Search.findAll();
