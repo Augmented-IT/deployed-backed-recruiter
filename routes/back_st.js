@@ -703,7 +703,8 @@ router.post('/compare_RecuiterProfile_with_CandidateProfile', async(req, res) =>
     const JobProfiles = await Fiche.findOne({where:{email: data.recuiterEmail}});
     await transaction.commit();
     if(!JobProfiles){
-      res.status(400).json({ error: 'Job Profile is not created!' });
+      // res.status(400).json({ error: 'Job Profile is not created!' });
+      return res.status(400).json({ error: 'Job Profile is not created!' });
     }
     console.log("AllMatchedForUser",AllMatchedForUser)
     const CandidateProfie = await Search.findAll();
